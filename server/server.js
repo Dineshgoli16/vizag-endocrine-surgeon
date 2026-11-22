@@ -140,7 +140,7 @@ app.post('/api/appointments', async (req, res) => {
   try {
     const mailOptions = {
       from: process.env.EMAIL_USER || 'your_email@gmail.com',
-      to: process.env.NOTIFICATION_EMAIL || process.env.EMAIL_USER || 'your_email@gmail.com',
+      to: process.env.NOTIFICATION_EMAIL || 'Dinesh.goli@gmail.com',
       subject: `New Appointment Booking: ${name}`,
       text: `You have a new appointment booking!
       
