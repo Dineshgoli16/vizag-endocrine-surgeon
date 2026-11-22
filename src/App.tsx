@@ -10,7 +10,7 @@ import {
   Stethoscope, Users, ChevronRight, Mail, Clock, Activity, 
   MessageCircle, Send, Bot, Loader2, AlertCircle, ShieldCheck,
   CheckCircle2, Star, Sparkles, HeartHandshake, ArrowUpRight,
-  Calendar
+  Calendar, FileText, HelpCircle, Layers, Shield
 } from 'lucide-react';
 import OpenAI from 'openai';
 import Gallery from './Gallery';
@@ -18,6 +18,10 @@ import ScarlessComparison from './components/ScarlessComparison';
 import SymptomChecker from './components/SymptomChecker';
 import PatientGuideModal from './components/PatientGuideModal';
 import PatientTestimonials from './components/PatientTestimonials';
+import AnatomyExplorer from './components/AnatomyExplorer';
+import ThyroidRiskCalculator from './components/ThyroidRiskCalculator';
+import InteractiveFAQ from './components/InteractiveFAQ';
+import SecondOpinionDesk from './components/SecondOpinionDesk';
 
 const SYSTEM_PROMPT = `You are Dr. Dinesh Goli's AI Clinical Assistant for an advanced Endocrine & Breast Surgery practice in Visakhapatnam (Vizag), Andhra Pradesh, India.
 Dr. Dinesh Goli's Credentials:
@@ -47,7 +51,7 @@ RULES:
 const INITIAL_MESSAGES = [
   { 
     role: 'bot' as const, 
-    content: "Namaskaram & Welcome! I am Dr. Dinesh Goli's AI Assistant.\n\nI can help you with:\n• Scarless TOETVA Thyroid Surgery (Zero Neck Scar)\n• Thyroid swellings, nodules & cancer\n• Parathyroid adenoma, high calcium & PTH\n• Adrenal tumors & laparoscopic surgery\n• Breast lumps, mammograms & oncoplastic surgery\n• OPD timings in Maharanipeta & Apollo Health City\n\nHow may I help you today?" 
+    content: "Namaskaram & Welcome! I am Dr. Dinesh Goli's AI Assistant.\n\nI can help you with:\n• Scarless TOETVA Thyroid Surgery (Zero Neck Scar)\n• Second opinion on Ultrasound & FNAC Biopsy reports\n• Thyroid swellings, nodules & cancer care\n• Parathyroid adenoma, high calcium & recurrent kidney stones\n• Breast lumps, mammograms & oncoplastic surgery\n• OPD timings in Maharanipeta & Apollo Health City\n\nHow may I help you today?" 
   }
 ];
 
@@ -312,15 +316,15 @@ export default function App() {
           </div>
 
           {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center gap-7 text-xs font-bold uppercase tracking-wider text-slate-600">
+          <div className="hidden lg:flex items-center gap-6 text-xs font-bold uppercase tracking-wider text-slate-600">
             <button onClick={() => scrollToSection('specialties')} className="hover:text-medical-teal transition-colors cursor-pointer">Specialties</button>
             <button onClick={() => scrollToSection('scarless')} className="hover:text-medical-teal text-medical-teal transition-colors flex items-center gap-1 cursor-pointer">
               <Sparkles size={13} className="text-medical-gold" /> Scarless TOETVA
             </button>
-            <button onClick={() => scrollToSection('symptom-checker')} className="hover:text-medical-teal transition-colors cursor-pointer">Triage Tool</button>
-            <button onClick={() => scrollToSection('about')} className="hover:text-medical-teal transition-colors cursor-pointer">About</button>
-            <button onClick={() => scrollToSection('education')} className="hover:text-medical-teal transition-colors cursor-pointer">Guides</button>
-            <button onClick={() => scrollToSection('testimonials')} className="hover:text-medical-teal transition-colors cursor-pointer">Reviews</button>
+            <button onClick={() => scrollToSection('anatomy')} className="hover:text-medical-teal transition-colors cursor-pointer">Anatomy</button>
+            <button onClick={() => scrollToSection('calculator')} className="hover:text-medical-teal transition-colors cursor-pointer">Risk Tool</button>
+            <button onClick={() => scrollToSection('second-opinion')} className="hover:text-medical-teal text-medical-gold transition-colors cursor-pointer">2nd Opinion</button>
+            <button onClick={() => scrollToSection('faqs')} className="hover:text-medical-teal transition-colors cursor-pointer">FAQs</button>
             <button onClick={() => scrollToSection('locations')} className="hover:text-medical-teal transition-colors cursor-pointer">Clinics</button>
             
             <a href="tel:+919133685222" className="text-red-700 font-extrabold border border-red-200 px-3 py-1.5 rounded-full bg-red-50 hover:bg-red-100 transition-colors flex items-center gap-1.5">
@@ -353,28 +357,28 @@ export default function App() {
             initial={{ opacity: 0, x: '100%' }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
-            className="fixed inset-0 z-40 bg-white pt-28 px-6 lg:hidden flex flex-col justify-between pb-8 shadow-2xl"
+            className="fixed inset-0 z-40 bg-white pt-28 px-6 lg:hidden flex flex-col justify-between pb-8 shadow-2xl overflow-y-auto"
           >
-            <div className="flex flex-col gap-4">
-              <button onClick={() => scrollToSection('specialties')} className="text-left font-serif font-bold text-lg text-medical-blue border-b border-gray-100 py-2.5 flex justify-between items-center">
+            <div className="flex flex-col gap-3.5">
+              <button onClick={() => scrollToSection('specialties')} className="text-left font-serif font-bold text-lg text-medical-blue border-b border-gray-100 py-2 flex justify-between items-center">
                 Specialties <ChevronRight size={18} className="text-medical-teal" />
               </button>
-              <button onClick={() => scrollToSection('scarless')} className="text-left font-serif font-bold text-lg text-medical-teal border-b border-gray-100 py-2.5 flex justify-between items-center">
+              <button onClick={() => scrollToSection('scarless')} className="text-left font-serif font-bold text-lg text-medical-teal border-b border-gray-100 py-2 flex justify-between items-center">
                 Scarless TOETVA (Zero Neck Scar) <Sparkles size={18} className="text-medical-gold" />
               </button>
-              <button onClick={() => scrollToSection('symptom-checker')} className="text-left font-serif font-bold text-lg text-medical-blue border-b border-gray-100 py-2.5 flex justify-between items-center">
-                Interactive Triage Tool <ChevronRight size={18} className="text-medical-teal" />
+              <button onClick={() => scrollToSection('anatomy')} className="text-left font-serif font-bold text-lg text-medical-blue border-b border-gray-100 py-2 flex justify-between items-center">
+                Interactive Neck Anatomy <Layers size={18} className="text-medical-teal" />
               </button>
-              <button onClick={() => scrollToSection('about')} className="text-left font-serif font-bold text-lg text-medical-blue border-b border-gray-100 py-2.5 flex justify-between items-center">
-                About Dr. Dinesh Goli <ChevronRight size={18} className="text-medical-teal" />
+              <button onClick={() => scrollToSection('calculator')} className="text-left font-serif font-bold text-lg text-medical-blue border-b border-gray-100 py-2 flex justify-between items-center">
+                Thyroid TIRADS & Biopsy Calculator <Stethoscope size={18} className="text-medical-teal" />
               </button>
-              <button onClick={() => scrollToSection('education')} className="text-left font-serif font-bold text-lg text-medical-blue border-b border-gray-100 py-2.5 flex justify-between items-center">
-                Patient Clinical Guides <ChevronRight size={18} className="text-medical-teal" />
+              <button onClick={() => scrollToSection('second-opinion')} className="text-left font-serif font-bold text-lg text-medical-gold border-b border-gray-100 py-2 flex justify-between items-center">
+                Second Opinion on Reports <FileText size={18} className="text-medical-gold" />
               </button>
-              <button onClick={() => scrollToSection('testimonials')} className="text-left font-serif font-bold text-lg text-medical-blue border-b border-gray-100 py-2.5 flex justify-between items-center">
-                Patient Reviews <ChevronRight size={18} className="text-medical-teal" />
+              <button onClick={() => scrollToSection('faqs')} className="text-left font-serif font-bold text-lg text-medical-blue border-b border-gray-100 py-2 flex justify-between items-center">
+                FAQs & Insurance Info <HelpCircle size={18} className="text-medical-teal" />
               </button>
-              <button onClick={() => scrollToSection('locations')} className="text-left font-serif font-bold text-lg text-medical-blue border-b border-gray-100 py-2.5 flex justify-between items-center">
+              <button onClick={() => scrollToSection('locations')} className="text-left font-serif font-bold text-lg text-medical-blue border-b border-gray-100 py-2 flex justify-between items-center">
                 Vizag Clinics & Timings <ChevronRight size={18} className="text-medical-teal" />
               </button>
             </div>
@@ -423,28 +427,28 @@ export default function App() {
                 Specialized in minimally invasive thyroidectomy, **Scarless TOETVA** (Zero Neck Scar), and oncoplastic breast conservation with advanced nerve-sparing safety in Visakhapatnam.
               </p>
 
-              {/* Qualifications Row */}
-              <div className="flex flex-wrap gap-2.5 sm:gap-3 mb-8">
-                <div className="px-4 py-2.5 bg-slate-50 rounded-xl border border-slate-200">
-                  <span className="block font-bold text-medical-blue text-lg">MBBS</span>
-                  <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Medical Degree</span>
+              {/* Animated Credibility Counters */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-8">
+                <div className="p-3 sm:p-4 bg-slate-50 rounded-2xl border border-slate-200 text-center">
+                  <span className="block font-serif font-bold text-2xl text-medical-blue">14+</span>
+                  <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Years Experience</span>
                 </div>
-                <div className="px-4 py-2.5 bg-slate-50 rounded-xl border border-slate-200">
-                  <span className="block font-bold text-medical-blue text-lg">DNB</span>
-                  <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">General Surgery</span>
+                <div className="p-3 sm:p-4 bg-slate-50 rounded-2xl border border-slate-200 text-center">
+                  <span className="block font-serif font-bold text-2xl text-medical-teal">5,000+</span>
+                  <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Patients Evaluated</span>
                 </div>
-                <div className="px-4 py-2.5 bg-medical-blue text-white rounded-xl shadow-md border border-medical-blue-dark">
-                  <span className="block font-bold text-lg text-medical-gold">MCh</span>
-                  <span className="text-[10px] uppercase font-bold tracking-wider text-white/80">Endocrine Surgery</span>
+                <div className="p-3 sm:p-4 bg-slate-50 rounded-2xl border border-slate-200 text-center">
+                  <span className="block font-serif font-bold text-2xl text-medical-gold">100%</span>
+                  <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">IONM Protocol</span>
                 </div>
-                <div className="px-4 py-2.5 bg-teal-50 rounded-xl border border-teal-200">
-                  <span className="block font-bold text-medical-teal text-lg">TOETVA</span>
-                  <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Scarless Expert</span>
+                <div className="p-3 sm:p-4 bg-medical-blue text-white rounded-2xl text-center shadow-md">
+                  <span className="block font-serif font-bold text-2xl text-medical-gold">0 cm</span>
+                  <span className="text-[10px] uppercase font-bold text-white/80 tracking-wider">TOETVA Neck Scar</span>
                 </div>
               </div>
 
-              {/* CTAs */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-10">
+              {/* Primary CTAs */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-8">
                 <button
                   onClick={() => scrollToSection('contact')}
                   className="px-8 py-4 rounded-xl bg-medical-blue text-white text-sm font-bold uppercase tracking-wider shadow-xl shadow-medical-blue/20 hover:bg-medical-blue-dark transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
@@ -452,10 +456,10 @@ export default function App() {
                   <Calendar size={18} /> Book Consultation
                 </button>
                 <button
-                  onClick={() => scrollToSection('scarless')}
-                  className="px-6 py-4 rounded-xl bg-white text-medical-teal text-sm font-bold uppercase tracking-wider border-2 border-medical-teal hover:bg-teal-50 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                  onClick={() => scrollToSection('second-opinion')}
+                  className="px-6 py-4 rounded-xl bg-white text-medical-blue border-2 border-medical-gold hover:bg-amber-50/50 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm text-sm font-bold uppercase tracking-wider"
                 >
-                  <Sparkles size={16} className="text-medical-gold" /> Zero-Scar TOETVA
+                  <FileText size={16} className="text-medical-gold" /> Second Opinion Desk
                 </button>
                 <a
                   href="https://wa.me/916300550392?text=Hello%20Dr.%20Dinesh%20Goli%2C%20I%20would%20like%20to%20consult%20regarding..."
@@ -590,8 +594,17 @@ export default function App() {
         {/* Scarless Comparison Component */}
         <ScarlessComparison onBookClick={() => scrollToSection('contact')} />
 
+        {/* Interactive Anatomy Explorer */}
+        <AnatomyExplorer onBookClick={() => scrollToSection('contact')} />
+
+        {/* Thyroid & Biopsy Risk Calculator */}
+        <ThyroidRiskCalculator onBookClick={() => scrollToSection('contact')} />
+
         {/* Interactive Symptom Checker */}
         <SymptomChecker onSelectSpecialty={(spec) => setFormData(prev => ({ ...prev, specialty: spec }))} />
+
+        {/* Second Opinion Desk */}
+        <SecondOpinionDesk onBookClick={() => scrollToSection('contact')} />
 
         {/* About Dr. Dinesh Goli */}
         <section id="about" className="py-20 lg:py-28 bg-white border-b border-gray-100 relative overflow-hidden">
@@ -741,6 +754,9 @@ export default function App() {
 
         {/* Patient Testimonials */}
         <PatientTestimonials />
+
+        {/* Interactive FAQ Section */}
+        <InteractiveFAQ />
 
         {/* Gallery */}
         <Gallery />
@@ -1075,6 +1091,8 @@ export default function App() {
           <div className="flex flex-wrap justify-center gap-6 text-xs font-semibold text-white/80">
             <button onClick={() => scrollToSection('specialties')} className="hover:text-medical-gold transition-colors">Specialties</button>
             <button onClick={() => scrollToSection('scarless')} className="hover:text-medical-gold transition-colors">Scarless TOETVA</button>
+            <button onClick={() => scrollToSection('anatomy')} className="hover:text-medical-gold transition-colors">Anatomy</button>
+            <button onClick={() => scrollToSection('calculator')} className="hover:text-medical-gold transition-colors">Risk Calculator</button>
             <button onClick={() => scrollToSection('locations')} className="hover:text-medical-gold transition-colors">Clinics</button>
             <a href="tel:+919133685222" className="text-red-400 hover:underline">Emergency: 9133685222</a>
           </div>
@@ -1155,6 +1173,9 @@ export default function App() {
             <div className="p-2.5 bg-white border-t border-slate-100 flex gap-1.5 overflow-x-auto text-[11px]">
               <button onClick={() => setInputMessage('Tell me about Scarless TOETVA')} className="px-2.5 py-1 bg-teal-50 text-medical-teal rounded-full font-bold whitespace-nowrap">
                 Scarless TOETVA
+              </button>
+              <button onClick={() => setInputMessage('Second opinion on my report')} className="px-2.5 py-1 bg-amber-50 text-amber-800 rounded-full font-medium whitespace-nowrap">
+                Second Opinion
               </button>
               <button onClick={() => setInputMessage('Book an appointment')} className="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-full font-medium whitespace-nowrap">
                 Book Visit
