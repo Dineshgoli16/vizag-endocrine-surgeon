@@ -1,44 +1,66 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Playfair Display", ui-serif, "Georgia", serif;
   
-  --color-medical-blue: #2C4C3B;        /* Deep Forest Green */
-  --color-medical-blue-dark: #1A3026;   /* Darker Shade */
-  --color-medical-teal: #4A7C59;        /* Soft Sage Green */
-  --color-medical-teal-light: #F1F7F4;  /* Very Light Sage */
-  --color-medical-gold: #AF9164;        /* Muted Brass/Gold */
-  --color-medical-gold-border: #C8B282; /* Lighter Brass */
-  --color-slate-bg: #FDFCF9;            /* Warm Off-White/Sand */
+  --color-medical-blue: #1A352B;        /* Deep Luxurious Forest Pine */
+  --color-medical-blue-dark: #0F231C;   /* Midnight Forest */
+  --color-medical-teal: #2D6A4F;        /* Vibrant Emerald Pine */
+  --color-medical-teal-light: #EBF4F0;  /* Crisp Light Sage */
+  --color-medical-gold: #C5A059;        /* Warm Champagne Gold */
+  --color-medical-gold-light: #F9F5EC;  /* Soft Gold Tint */
+  --color-medical-gold-border: #D8BF8E; /* Crisp Brass Border */
+  --color-slate-bg: #F8FAF8;            /* Pristine Off-White */
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply font-sans text-medical-blue-dark bg-slate-bg;
+    @apply font-sans text-medical-blue-dark bg-slate-bg antialiased selection:bg-medical-teal selection:text-white;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif font-bold tracking-tight;
+    @apply font-serif tracking-tight text-medical-blue;
   }
 }
 
 .medical-gradient {
-  background: linear-gradient(135deg, var(--color-medical-blue) 0%, #172554 100%);
+  background: linear-gradient(135deg, var(--color-medical-blue) 0%, #0F231C 100%);
 }
 
 .glass-morphism {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(226, 232, 240, 0.8);
 }
 
 .card-shadow {
-  box-shadow: 0 4px 6px -1px rgba(30, 58, 138, 0.05), 0 2px 4px -2px rgba(30, 58, 138, 0.05);
+  box-shadow: 0 10px 25px -5px rgba(26, 53, 43, 0.06), 0 8px 10px -6px rgba(26, 53, 43, 0.04);
+}
+
+.card-shadow-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-shadow-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 35px -10px rgba(26, 53, 43, 0.12), 0 10px 15px -5px rgba(26, 53, 43, 0.06);
 }
 
 .gold-border-left {
-  border-left: 4px solid var(--color-medical-gold-border);
+  border-left: 4px solid var(--color-medical-gold);
 }
 
+.emerald-glow {
+  box-shadow: 0 0 40px rgba(45, 106, 79, 0.15);
+}
+
+.gold-glow {
+  box-shadow: 0 0 35px rgba(197, 160, 89, 0.2);
+}
