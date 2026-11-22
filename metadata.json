@@ -1,0 +1,8 @@
+{
+  "name": "Dr. Dinesh Goli | Endocrine & Breast Surgery",
+  "description": "Premium medical practice website for Dr. Dinesh Goli, specialized in thyroid, parathyroid, adrenal, and breast surgeries with a focus on minimally invasive techniques.",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "majorCapabilities": []
+}
