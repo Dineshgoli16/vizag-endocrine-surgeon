@@ -87,9 +87,48 @@
       ]
     }
     </script>
+      <!-- PWA & Mobile Web App Meta -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#0f3d3e" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Vizag Endo Surgeon" />
+    
+    <!-- Print Styles for Discharge Sheets and Care Guides -->
+    <style>
+      @media print {
+        nav, footer, .no-print, [aria-label="Open AI Health Assistant"], [aria-label="Open WhatsApp Desk"], iframe {
+          display: none !important;
+        }
+        body {
+          background: #ffffff !important;
+          color: #000000 !important;
+          font-size: 11pt !important;
+        }
+        .print-area {
+          box-shadow: none !important;
+          border: 1px solid #cbd5e1 !important;
+          margin: 0 !important;
+          page-break-inside: avoid;
+        }
+      }
+    </style>
+
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+      <!-- Register PWA Service Worker -->
+    <script>
+      if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('PWA ServiceWorker registered:', reg.scope))
+            .catch(err => console.warn('PWA registration failed:', err));
+        });
+      }
+    </script>
+
   </body>
 </html>

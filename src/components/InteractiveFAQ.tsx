@@ -1,5 +1,5 @@
-﻿import React, { useState } from 'react';
-import { ChevronDown, Search, HelpCircle, ShieldCheck, CreditCard, Sparkles, Stethoscope } from 'lucide-react';
+import React, { useState } from 'react';
+import { ChevronDown, Search, HelpCircle, ShieldCheck, CreditCard, Sparkles, Stethoscope, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface FAQItem {
@@ -8,7 +8,7 @@ interface FAQItem {
   category: 'toetva' | 'thyroid' | 'parathyroid' | 'breast' | 'insurance';
 }
 
-const FAQS: FAQItem[] = [
+const FAQS_EN: FAQItem[] = [
   {
     category: 'toetva',
     q: 'How is Scarless TOETVA different from regular thyroid surgery?',
@@ -51,12 +51,47 @@ const FAQS: FAQItem[] = [
   }
 ];
 
-export default function InteractiveFAQ() {
+const FAQS_TE: FAQItem[] = [
+  {
+    category: 'toetva',
+    q: 'సాధారణ థైరాయిడ్ సర్జరీకి, స్కార్‌లెస్ TOETVA కు తేడా ఏమిటి?',
+    a: 'సాధారణ సర్జరీలో మెడ ముందు భాగంలో 5 నుండి 8 సెం.మీ పొడవైన కోత పెడతారు. TOETVA పద్ధతిలో కింది పెదవి లోపలి భాగంలో 3 చిన్న రంధ్రాల ద్వారా కెమెరాను పంపి థైరాయిడ్ గడ్డను తొలగిస్తారు. మెడ చర్మంపై ఎటువంటి కోత ఉండదు, మచ్చ సున్నా.'
+  },
+  {
+    category: 'toetva',
+    q: 'స్కార్‌లెస్ TOETVA వల్ల స్వరపేటికకు లేదా గొంతు నరాలకు ప్రమాదం ఉందా?',
+    a: 'లేదు. TOETVA లో 4K హెచ్‌డీ కెమెరా 10 రెట్లు పెద్దదిగా చూపిస్తుంది. పైగా ఇంట్రాఆపరేటివ్ నెర్వ్ మానిటరింగ్ (IONM) ద్వారా స్వర నరాలను నిరంతరం పర్యవేక్షిస్తూ శస్త్రచికిత్స చేస్తారు. కాబట్టి మాట మారే ప్రమాదం ఉండదు.'
+  },
+  {
+    category: 'thyroid',
+    q: 'సర్జరీ తర్వాత జీవితాంతం థైరాయిడ్ మాత్రలు వేసుకోవాలా?',
+    a: 'సగం థైరాయిడ్ (హెమిథైరాయిడెక్టమీ) మాత్రమే తీసివేస్తే, మిగిలిన సగం సహజంగా హార్మోన్ ఉత్పత్తి చేస్తుంది కాబట్టి 70-80% మందికి మాత్రలు అవసరం ఉండదు. మొత్తం గ్రంధి తీసివేస్తే (టోటల్ థైరాయిడెక్టమీ) రోజుకు ఒక మాత్ర వేసుకోవాలి.'
+  },
+  {
+    category: 'parathyroid',
+    q: 'నీరు బాగా తాగినా కిడ్నీలో రాళ్లు మళ్లీ మళ్లీ ఎందుకు వస్తున్నాయి?',
+    a: 'పారాథైరాయిడ్ గ్రంధిలో చిన్న గడ్డ (Adenoma) ఏర్పడి రక్తంలో క్యాల్షియం మోతాదును విపరీతంగా పెంచడం వల్ల ఇలా జరుగుతుంది. డాక్టర్ దినేష్ గోలి గారు ఆ గడ్డను శస్త్రచికిత్స ద్వారా తొలగించిన 24 గంటల్లో క్యాల్షియం సాధారణ స్థితికి వచ్చి రాళ్లు రావడం ఆగిపోతుంది.'
+  },
+  {
+    category: 'insurance',
+    q: 'అపోలో హెల్త్ సిటీలో నగదు రహిత ఇన్సూరెన్స్ వర్తిస్తుందా?',
+    a: 'అవును. స్టార్ హెల్త్, కేర్ హెల్త్, హెచ్‌డీఎఫ్‌సీ ఎర్గో, ఐసీఐసీఐ లాంబార్డ్, మెడిబడ్డీ మరియు అన్ని ప్రభుత్వ/కార్పొరేట్ టీపీఏల ద్వారా 100% క్యాష్‌లెస్ సదుపాయం అందుబాటులో ఉంది.'
+  }
+];
+
+interface InteractiveFAQProps {
+  language?: 'en' | 'te';
+}
+
+export default function InteractiveFAQ({ language = 'en' }: InteractiveFAQProps) {
+  const isTelugu = language === 'te';
+  const faqList = isTelugu ? FAQS_TE : FAQS_EN;
+
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
 
-  const filtered = FAQS.filter(item => {
+  const filtered = faqList.filter(item => {
     const matchesCat = activeCategory === 'all' || item.category === activeCategory;
     const matchesSearch = item.q.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           item.a.toLowerCase().includes(searchQuery.toLowerCase());
@@ -68,25 +103,35 @@ export default function InteractiveFAQ() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-10">
         <div className="text-center max-w-3xl mx-auto mb-14">
           <span className="text-xs font-bold uppercase tracking-[0.25em] text-medical-teal block mb-3 font-sans">
-            Frequently Asked Questions
+            {isTelugu ? 'సందేహాలు & సమాధానాలు' : 'Frequently Asked Questions'}
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-medical-blue tracking-tight">
-            Patient Questions & Insurance Info
+            {isTelugu ? 'రోగుల సాధారణ ప్రశ్నలు & ఇన్సూరెన్స్ సమాచారం' : 'Patient Questions & Clinical Answers'}
           </h2>
           <p className="text-sm text-slate-600 mt-3 font-sans">
-            Clear, transparent answers to practical questions regarding thyroid surgery, voice recovery, scarless TOETVA, and hospital cashless claims.
+            {isTelugu 
+              ? 'థైరాయిడ్ సర్జరీ, వాయిస్ సేఫ్టీ, స్కార్‌లెస్ పద్ధతులు మరియు ఆసుపత్రి అడ్మిషన్ల గురించి పారదర్శక సమాధానాలు.'
+              : 'Clear, transparent answers to practical questions regarding thyroid surgery, voice recovery, scarless TOETVA, and hospital cashless claims.'}
           </p>
 
-          {/* Search Input */}
+          {/* Search Input with Clear Button */}
           <div className="relative max-w-md mx-auto mt-8">
             <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
             <input 
               type="text" 
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              placeholder="Search e.g. scar, voice, insurance, recovery..."
-              className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-full text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-medical-teal font-sans"
+              placeholder={isTelugu ? 'శోధించండి e.g. scar, voice, insurance, recovery...' : 'Search e.g. scar, voice, insurance, stones...'}
+              className="w-full pl-11 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-full text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-medical-teal font-sans shadow-inner"
             />
+            {searchQuery && (
+              <button 
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+              >
+                <X size={16} />
+              </button>
+            )}
           </div>
 
           {/* Category Filter Pills */}
@@ -97,7 +142,7 @@ export default function InteractiveFAQ() {
                 activeCategory === 'all' ? 'bg-medical-blue text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:text-medical-blue'
               }`}
             >
-              All Topics
+              {isTelugu ? 'అన్ని అంశాలు' : 'All Topics'}
             </button>
             <button
               onClick={() => setActiveCategory('toetva')}
@@ -113,7 +158,7 @@ export default function InteractiveFAQ() {
                 activeCategory === 'thyroid' ? 'bg-medical-blue text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:text-medical-blue'
               }`}
             >
-              Thyroid & Voice
+              {isTelugu ? 'థైరాయిడ్ & వాయిస్' : 'Thyroid & Voice'}
             </button>
             <button
               onClick={() => setActiveCategory('parathyroid')}
@@ -121,7 +166,7 @@ export default function InteractiveFAQ() {
                 activeCategory === 'parathyroid' ? 'bg-medical-blue text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:text-medical-blue'
               }`}
             >
-              Parathyroid & Stones
+              {isTelugu ? 'పారాథైరాయిడ్ & కిడ్నీ రాళ్లు' : 'Parathyroid & Stones'}
             </button>
             <button
               onClick={() => setActiveCategory('insurance')}
@@ -129,16 +174,20 @@ export default function InteractiveFAQ() {
                 activeCategory === 'insurance' ? 'bg-medical-blue text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:text-medical-blue'
               }`}
             >
-              Cashless Insurance & Stay
+              {isTelugu ? 'ఇన్సూరెన్స్ & హాస్పిటల్ స్టే' : 'Cashless Insurance'}
             </button>
+          </div>
+
+          <div className="text-[11px] font-bold text-slate-400 mt-4">
+            {filtered.length} {isTelugu ? 'సమాధానాలు అందుబాటులో ఉన్నాయి' : 'clinical answers available'}
           </div>
         </div>
 
         {/* Accordion List */}
         <div className="space-y-4">
           {filtered.length === 0 ? (
-            <div className="text-center py-12 text-slate-400 text-sm font-sans">
-              No matching questions found. Try a different search term or connect with Dr. Dinesh Goli's team on WhatsApp.
+            <div className="text-center py-12 text-slate-400 text-sm font-sans bg-slate-50 rounded-3xl border border-slate-200">
+              No matching questions found for "{searchQuery}". Connect directly with Dr. Dinesh Goli's team on WhatsApp.
             </div>
           ) : (
             filtered.map((item, idx) => {

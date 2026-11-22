@@ -23,6 +23,10 @@ import ThyroidRiskCalculator from './components/ThyroidRiskCalculator';
 import InteractiveFAQ from './components/InteractiveFAQ';
 import SecondOpinionDesk from './components/SecondOpinionDesk';
 import PatientCareGuide from './components/PatientCareGuide';
+import MedicationTimetable from './components/MedicationTimetable';
+import ToetvaVisualizer from './components/ToetvaVisualizer';
+import ResearchPedigree from './components/ResearchPedigree';
+
 import InsuranceGuide from './components/InsuranceGuide';
 import WhatsAppFloatingWidget from './components/WhatsAppFloatingWidget';
 import { Globe } from 'lucide-react';
@@ -332,6 +336,13 @@ export default function App() {
             <button onClick={() => scrollToSection('anatomy')} className="hover:text-medical-teal transition-colors cursor-pointer">Anatomy</button>
             <button onClick={() => scrollToSection('calculator')} className="hover:text-medical-teal transition-colors cursor-pointer">Risk Tool</button>
             <button onClick={() => scrollToSection('second-opinion')} className="hover:text-medical-teal text-medical-gold transition-colors cursor-pointer">2nd Opinion</button>
+            <button onClick={() => scrollToSection('toetva-guide')} className="hover:text-medical-teal text-medical-teal transition-colors flex items-center gap-1 cursor-pointer">
+              <Sparkles size={12} className="text-medical-gold" />
+              {isTelugu ? 'TOETVA 3D' : 'TOETVA 3D'}
+            </button>
+            <button onClick={() => scrollToSection('medication-tracker')} className="hover:text-medical-teal transition-colors cursor-pointer">
+              {isTelugu ? 'టైమ్‌టేబుల్' : 'Timetable'}
+            </button>
             <button onClick={() => scrollToSection('care-guide')} className="hover:text-medical-teal transition-colors cursor-pointer">
               {isTelugu ? 'కేర్ గైడ్' : 'Care Guide'}
             </button>
@@ -398,6 +409,12 @@ export default function App() {
               </button>
               <button onClick={() => scrollToSection('second-opinion')} className="text-left font-serif font-bold text-lg text-medical-gold border-b border-gray-100 py-2 flex justify-between items-center">
                 Second Opinion on Reports <FileText size={18} className="text-medical-gold" />
+              </button>
+              <button onClick={() => scrollToSection('toetva-guide')} className="text-left font-serif font-bold text-lg text-medical-teal border-b border-gray-100 py-2 flex justify-between items-center">
+                {isTelugu ? 'స్కార్‌లెస్ TOETVA 3D విజువలైజర్' : 'TOETVA 3D Visualizer (How it Works)'} <Sparkles size={18} className="text-medical-gold" />
+              </button>
+              <button onClick={() => scrollToSection('medication-tracker')} className="text-left font-serif font-bold text-lg text-medical-blue border-b border-gray-100 py-2 flex justify-between items-center">
+                {isTelugu ? 'పోస్ట్-ఆప్ క్యాల్షియం & మెడిసిన్ టైమ్‌టేబుల్' : 'Calcium & Medicine Safety Timetable'} <Clock size={18} className="text-medical-teal" />
               </button>
               <button onClick={() => scrollToSection('care-guide')} className="text-left font-serif font-bold text-lg text-medical-blue border-b border-gray-100 py-2 flex justify-between items-center">
                 {isTelugu ? 'రోగి సంరక్షణ గైడ్ (Pre & Post-Op)' : 'Patient Care Roadmap (Pre & Post-Op)'} <Activity size={18} className="text-medical-teal" />
@@ -646,6 +663,9 @@ export default function App() {
         {/* Scarless Comparison Component */}
         <ScarlessComparison onBookClick={() => scrollToSection('contact')} />
 
+        {/* TOETVA Step-by-Step Interactive Visualizer */}
+        <ToetvaVisualizer language={language} onBookClick={() => scrollToSection('contact')} />
+
         {/* Interactive Anatomy Explorer */}
         <AnatomyExplorer onBookClick={() => scrollToSection('contact')} />
 
@@ -656,7 +676,7 @@ export default function App() {
         <SymptomChecker onSelectSpecialty={(spec) => setFormData(prev => ({ ...prev, specialty: spec }))} />
 
         {/* Second Opinion Desk */}
-        <SecondOpinionDesk onBookClick={() => scrollToSection('contact')} />
+        <SecondOpinionDesk language={language} onBookClick={() => scrollToSection('contact')} />
 
         {/* About Dr. Dinesh Goli */}
         <section id="about" className="py-20 lg:py-28 bg-white border-b border-gray-100 relative overflow-hidden">
@@ -747,6 +767,9 @@ export default function App() {
           </div>
         </section>
 
+        {/* Surgical Pedigree & Research Showcase */}
+        <ResearchPedigree language={language} onBookClick={() => scrollToSection('contact')} />
+
         {/* Patient Guides Hub */}
         <section id="education" className="py-20 lg:py-28 bg-medical-blue text-white relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
@@ -807,6 +830,9 @@ export default function App() {
         {/* Patient Pre-Op & Post-Op Care Guide */}
         <PatientCareGuide language={language} onBookClick={() => scrollToSection('contact')} />
 
+        {/* Post-Op Calcium & Medication Safety Timetable */}
+        <MedicationTimetable language={language} />
+
         {/* Cashless Health Insurance & TPA Guide */}
         <InsuranceGuide language={language} onBookClick={() => scrollToSection('contact')} />
 
@@ -814,7 +840,7 @@ export default function App() {
         <PatientTestimonials />
 
         {/* Interactive FAQ Section */}
-        <InteractiveFAQ />
+        <InteractiveFAQ language={language} />
 
         {/* Gallery */}
         <Gallery />
