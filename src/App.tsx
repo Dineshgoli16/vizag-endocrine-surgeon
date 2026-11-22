@@ -22,6 +22,11 @@ import AnatomyExplorer from './components/AnatomyExplorer';
 import ThyroidRiskCalculator from './components/ThyroidRiskCalculator';
 import InteractiveFAQ from './components/InteractiveFAQ';
 import SecondOpinionDesk from './components/SecondOpinionDesk';
+import PatientCareGuide from './components/PatientCareGuide';
+import InsuranceGuide from './components/InsuranceGuide';
+import WhatsAppFloatingWidget from './components/WhatsAppFloatingWidget';
+import { Globe } from 'lucide-react';
+
 
 const SYSTEM_PROMPT = `You are Dr. Dinesh Goli's AI Clinical Assistant for an advanced Endocrine & Breast Surgery practice in Visakhapatnam (Vizag), Andhra Pradesh, India.
 Dr. Dinesh Goli's Credentials:
@@ -69,6 +74,9 @@ export default function App() {
 
   // Modals & Guided Experience
   const [selectedGuideId, setSelectedGuideId] = useState<string | null>(null);
+  const [language, setLanguage] = useState<'en' | 'te'>('en');
+  const isTelugu = language === 'te';
+
 
   // Appointment Form & Status
   const [formData, setFormData] = useState({ 
@@ -324,18 +332,34 @@ export default function App() {
             <button onClick={() => scrollToSection('anatomy')} className="hover:text-medical-teal transition-colors cursor-pointer">Anatomy</button>
             <button onClick={() => scrollToSection('calculator')} className="hover:text-medical-teal transition-colors cursor-pointer">Risk Tool</button>
             <button onClick={() => scrollToSection('second-opinion')} className="hover:text-medical-teal text-medical-gold transition-colors cursor-pointer">2nd Opinion</button>
-            <button onClick={() => scrollToSection('faqs')} className="hover:text-medical-teal transition-colors cursor-pointer">FAQs</button>
+            <button onClick={() => scrollToSection('care-guide')} className="hover:text-medical-teal transition-colors cursor-pointer">
+              {isTelugu ? 'కేర్ గైడ్' : 'Care Guide'}
+            </button>
+            <button onClick={() => scrollToSection('insurance')} className="hover:text-medical-teal transition-colors cursor-pointer">
+              {isTelugu ? 'ఇన్సూరెన్స్' : 'Insurance'}
+            </button>
+            <button onClick={() => scrollToSection('faqs')} className="hover:text-medical-teal transition-colors cursor-pointer">
+              {isTelugu ? 'ప్రశ్నలు' : 'FAQs'}
+            </button>
             <button onClick={() => scrollToSection('locations')} className="hover:text-medical-teal transition-colors cursor-pointer">Clinics</button>
             
             <a href="tel:+919133685222" className="text-red-700 font-extrabold border border-red-200 px-3 py-1.5 rounded-full bg-red-50 hover:bg-red-100 transition-colors flex items-center gap-1.5">
               <Phone size={12} /> 9133685222
             </a>
             
+            <button
+              onClick={() => setLanguage(l => l === 'en' ? 'te' : 'en')}
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-slate-300 hover:border-medical-teal bg-white/95 text-xs font-bold text-slate-700 hover:text-medical-blue transition-all cursor-pointer shadow-sm"
+              title="Switch Language / భాష మార్చండి"
+            >
+              <Globe size={14} className="text-medical-teal" />
+              <span>{isTelugu ? 'English' : 'తెలుగు'}</span>
+            </button>
             <button 
               onClick={() => scrollToSection('contact')} 
               className="bg-medical-blue text-white px-5 py-2.5 rounded-full font-bold shadow-lg shadow-medical-blue/20 hover:bg-medical-blue-dark transition-all hover:scale-105 active:scale-95 cursor-pointer"
             >
-              Book Consultation
+              {isTelugu ? 'అపాయింట్‌మెంట్' : 'Book Consultation'}
             </button>
           </div>
 
@@ -375,8 +399,14 @@ export default function App() {
               <button onClick={() => scrollToSection('second-opinion')} className="text-left font-serif font-bold text-lg text-medical-gold border-b border-gray-100 py-2 flex justify-between items-center">
                 Second Opinion on Reports <FileText size={18} className="text-medical-gold" />
               </button>
+              <button onClick={() => scrollToSection('care-guide')} className="text-left font-serif font-bold text-lg text-medical-blue border-b border-gray-100 py-2 flex justify-between items-center">
+                {isTelugu ? 'రోగి సంరక్షణ గైడ్ (Pre & Post-Op)' : 'Patient Care Roadmap (Pre & Post-Op)'} <Activity size={18} className="text-medical-teal" />
+              </button>
+              <button onClick={() => scrollToSection('insurance')} className="text-left font-serif font-bold text-lg text-medical-blue border-b border-gray-100 py-2 flex justify-between items-center">
+                {isTelugu ? 'హెల్త్ ఇన్సూరెన్స్ & నగదు రహిత క్లెయిమ్‌లు' : 'Cashless Health Insurance & TPA'} <Shield size={18} className="text-medical-teal" />
+              </button>
               <button onClick={() => scrollToSection('faqs')} className="text-left font-serif font-bold text-lg text-medical-blue border-b border-gray-100 py-2 flex justify-between items-center">
-                FAQs & Insurance Info <HelpCircle size={18} className="text-medical-teal" />
+                {isTelugu ? 'తరచుగా అడిగే ప్రశ్నలు (FAQs)' : 'FAQs & Answers'} <HelpCircle size={18} className="text-medical-teal" />
               </button>
               <button onClick={() => scrollToSection('locations')} className="text-left font-serif font-bold text-lg text-medical-blue border-b border-gray-100 py-2 flex justify-between items-center">
                 Vizag Clinics & Timings <ChevronRight size={18} className="text-medical-teal" />
@@ -384,6 +414,18 @@ export default function App() {
             </div>
 
             <div className="space-y-3 pt-6 border-t border-gray-100">
+              <button
+                onClick={() => setLanguage(l => l === 'en' ? 'te' : 'en')}
+                className="w-full py-3 px-4 rounded-xl border border-medical-teal/40 bg-teal-50 text-medical-teal font-bold text-sm flex items-center justify-between shadow-sm cursor-pointer"
+              >
+                <div className="flex items-center gap-2">
+                  <Globe size={18} />
+                  <span>{isTelugu ? 'భాష: తెలుగు (మార్చండి)' : 'Language: English (Switch)'}</span>
+                </div>
+                <span className="px-2 py-0.5 rounded bg-medical-teal text-white text-xs uppercase font-extrabold">
+                  {isTelugu ? 'English' : 'తెలుగు'}
+                </span>
+              </button>
               <a href="tel:+919133685222" className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-red-50 text-red-700 font-bold text-sm border border-red-200">
                 <Phone size={16} /> Emergency Helpline: 9133685222
               </a>
@@ -418,9 +460,19 @@ export default function App() {
               </div>
 
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold text-medical-blue leading-[1.12] mb-6 tracking-tight">
-                Precision Surgery for <br />
-                <span className="text-medical-teal">Thyroid, Parathyroid</span> <br />
-                & Breast Conditions.
+                {isTelugu ? (
+                  <>
+                    థైరాయిడ్, పారాథైరాయిడ్ & <br />
+                    <span className="text-medical-teal">బ్రెస్ట్ శస్త్రచికిత్సలో</span> <br />
+                    అత్యాధునిక నిపుణత.
+                  </>
+                ) : (
+                  <>
+                    Precision Surgery for <br />
+                    <span className="text-medical-teal">Thyroid, Parathyroid</span> <br />
+                    & Breast Conditions.
+                  </>
+                )}
               </h1>
 
               <p className="text-base sm:text-lg text-slate-600 mb-8 max-w-xl leading-relaxed font-sans border-l-4 border-medical-gold pl-4 sm:pl-5">
@@ -751,6 +803,12 @@ export default function App() {
             </div>
           </div>
         </section>
+
+        {/* Patient Pre-Op & Post-Op Care Guide */}
+        <PatientCareGuide language={language} onBookClick={() => scrollToSection('contact')} />
+
+        {/* Cashless Health Insurance & TPA Guide */}
+        <InsuranceGuide language={language} onBookClick={() => scrollToSection('contact')} />
 
         {/* Patient Testimonials */}
         <PatientTestimonials />
@@ -1227,6 +1285,9 @@ export default function App() {
         onClose={() => setSelectedGuideId(null)} 
         onBookClick={() => scrollToSection('contact')}
       />
+
+      {/* Floating WhatsApp Quick Launcher (Bottom-Left) */}
+      <WhatsAppFloatingWidget language={language} />
     </div>
   );
 }
