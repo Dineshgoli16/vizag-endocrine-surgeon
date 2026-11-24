@@ -120,7 +120,7 @@ export default function PatientCareGuide({ onBookClick, language = 'en' }: Patie
   ];
 
   return (
-    <section id="care-guide" className="py-20 lg:py-28 bg-white relative overflow-hidden">
+    <section id="care-guide" className="scroll-mt-28 lg:scroll-mt-32 py-20 lg:py-28 bg-white relative overflow-hidden">
       {/* Decorative background glow */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-medical-teal/5 rounded-full blur-3xl -z-10 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-medical-gold/5 rounded-full blur-3xl -z-10 pointer-events-none" />

@@ -49,7 +49,7 @@ export default function PatientTestimonials() {
   const t = TESTIMONIALS[currentIndex];
 
   return (
-    <section id="testimonials" className="py-20 lg:py-28 bg-white border-b border-gray-100 relative overflow-hidden">
+    <section id="testimonials" className="scroll-mt-28 lg:scroll-mt-32 py-20 lg:py-28 bg-white border-b border-gray-100 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <div className="text-center max-w-3xl mx-auto mb-14">
           <span className="text-xs font-bold uppercase tracking-[0.25em] text-medical-teal block mb-3 font-sans">

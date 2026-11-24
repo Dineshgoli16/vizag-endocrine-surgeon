@@ -124,7 +124,7 @@ export default function Gallery() {
 
   return (
     <>
-      <section id="gallery" className="py-16 lg:py-24 bg-white border-t border-gray-100">
+      <section id="gallery" className="scroll-mt-28 lg:scroll-mt-32 py-16 lg:py-24 bg-white border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
           <div className="flex flex-col md:flex-row justify-between items-center mb-12">
             <div className="text-center md:text-left mb-6 md:mb-0">

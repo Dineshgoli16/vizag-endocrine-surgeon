@@ -104,7 +104,7 @@ export default function ThyroidRiskCalculator({ onBookClick }: { onBookClick: ()
   const currentBethesda = BETHESDA_LEVELS[selectedBethesdaIndex];
 
   return (
-    <section id="calculator" className="py-20 lg:py-28 bg-slate-bg border-b border-gray-100 relative">
+    <section id="calculator" className="scroll-mt-28 lg:scroll-mt-32 py-20 lg:py-28 bg-slate-bg border-b border-gray-100 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <div className="text-center max-w-3xl mx-auto mb-14">
           <span className="text-xs font-bold uppercase tracking-[0.25em] text-medical-teal block mb-3 font-sans">

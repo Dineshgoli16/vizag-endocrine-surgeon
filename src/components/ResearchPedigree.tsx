@@ -75,7 +75,7 @@ export default function ResearchPedigree({ onBookClick, language = 'en' }: Resea
   ];
 
   return (
-    <section id="research" className="py-20 lg:py-28 bg-slate-bg border-b border-gray-100 relative">
+    <section id="research" className="scroll-mt-28 lg:scroll-mt-32 py-20 lg:py-28 bg-slate-bg border-b border-gray-100 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}

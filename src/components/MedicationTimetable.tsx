@@ -142,7 +142,7 @@ Vizag Endocrine Surgery Clinic`;
   };
 
   return (
-    <section id="medication-tracker" className="py-20 lg:py-28 bg-slate-50 border-b border-gray-100 relative">
+    <section id="medication-tracker" className="scroll-mt-28 lg:scroll-mt-32 py-20 lg:py-28 bg-slate-50 border-b border-gray-100 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}

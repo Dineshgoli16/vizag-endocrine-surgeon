@@ -4,10 +4,33 @@ import { X, Send, MessageSquare, Sparkles, ChevronRight, Check } from 'lucide-re
 
 interface WhatsAppFloatingWidgetProps {
   language?: 'en' | 'te';
+  isOpen?: boolean;
+  onToggle?: () => void;
 }
 
-export default function WhatsAppFloatingWidget({ language = 'en' }: WhatsAppFloatingWidgetProps) {
-  const [isOpen, setIsOpen] = useState(false);
+export default function WhatsAppFloatingWidget({ 
+  language = 'en',
+  isOpen: controlledIsOpen,
+  onToggle
+}: WhatsAppFloatingWidgetProps) {
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
+  const isOpen = controlledIsOpen !== undefined ? controlledIsOpen : internalIsOpen;
+  
+  const handleToggle = () => {
+    if (onToggle) {
+      onToggle();
+    } else {
+      setInternalIsOpen(!internalIsOpen);
+    }
+  };
+  
+  const handleClose = () => {
+    if (onToggle) {
+      onToggle();
+    } else {
+      setInternalIsOpen(false);
+    }
+  };
   const [customMsg, setCustomMsg] = useState('');
 
   const isTelugu = language === 'te';
@@ -90,7 +113,7 @@ export default function WhatsAppFloatingWidget({ language = 'en' }: WhatsAppFloa
               </div>
 
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={handleClose}
                 className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-all cursor-pointer"
                 aria-label="Close WhatsApp Menu"
               >
@@ -160,7 +183,7 @@ export default function WhatsAppFloatingWidget({ language = 'en' }: WhatsAppFloa
 
       {/* Floating Trigger Button (Bottom-Left) */}
       <motion.button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleToggle}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         className="fixed bottom-6 left-4 sm:left-6 z-40 flex items-center gap-2.5 px-4 py-3 rounded-full bg-emerald-600 text-white shadow-2xl hover:bg-emerald-700 border-2 border-white transition-all cursor-pointer group"

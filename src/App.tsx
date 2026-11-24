@@ -7,7 +7,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Menu, X, Phone, MapPin, ExternalLink, Award, BookOpen, 
-  Stethoscope, Users, ChevronRight, Mail, Clock, Activity, 
+  Stethoscope, Users, ChevronRight, ChevronDown, Mail, Clock, Activity, 
   MessageCircle, Send, Bot, Loader2, AlertCircle, ShieldCheck,
   CheckCircle2, Star, Sparkles, HeartHandshake, ArrowUpRight,
   Calendar, FileText, HelpCircle, Layers, Shield
@@ -79,6 +79,8 @@ export default function App() {
   // Modals & Guided Experience
   const [selectedGuideId, setSelectedGuideId] = useState<string | null>(null);
   const [language, setLanguage] = useState<'en' | 'te'>('en');
+  const [isToolsDropdownOpen, setIsToolsDropdownOpen] = useState(false);
+  const [isWhatsAppOpen, setIsWhatsAppOpen] = useState(false);
   const isTelugu = language === 'te';
 
 
@@ -186,9 +188,19 @@ export default function App() {
   }, [chatMessages]);
 
   const scrollToSection = (id: string) => {
-    const elem = document.getElementById(id);
-    elem?.scrollIntoView({ behavior: 'smooth' });
     setIsMenuOpen(false);
+    setIsToolsDropdownOpen(false);
+    const elem = document.getElementById(id);
+    if (elem) {
+      const nav = document.querySelector('nav');
+      const navHeight = nav ? nav.getBoundingClientRect().height : 90;
+      const elementPosition = elem.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = Math.max(0, elementPosition - navHeight - 16);
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
   };
 
   const getLocalFallback = (userInput: string): string => {
@@ -283,9 +295,7 @@ export default function App() {
     <div className="min-h-screen bg-slate-bg selection:bg-medical-teal selection:text-white flex flex-col font-sans">
       {/* Navigation */}
       <nav 
-        className={`fixed top-0 w-full z-50 transition-all duration-300 flex flex-col ${
-          scrolled ? 'glass-morphism shadow-md' : 'bg-transparent'
-        }`}
+        className="fixed top-0 w-full z-50 transition-all duration-300 flex flex-col bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200/80"
       >
         {/* Top Ticker */}
         <AnimatePresence>
@@ -328,47 +338,82 @@ export default function App() {
           </div>
 
           {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center gap-6 text-xs font-bold uppercase tracking-wider text-slate-600">
-            <button onClick={() => scrollToSection('specialties')} className="hover:text-medical-teal transition-colors cursor-pointer">Specialties</button>
-            <button onClick={() => scrollToSection('scarless')} className="hover:text-medical-teal text-medical-teal transition-colors flex items-center gap-1 cursor-pointer">
-              <Sparkles size={13} className="text-medical-gold" /> Scarless TOETVA
+          <div className="hidden lg:flex items-center gap-5 text-xs font-bold uppercase tracking-wider text-slate-600">
+            <button onClick={() => scrollToSection('specialties')} className="hover:text-medical-teal transition-colors cursor-pointer whitespace-nowrap">
+              {isTelugu ? 'ప్రత్యేకతలు' : 'Specialties'}
             </button>
-            <button onClick={() => scrollToSection('anatomy')} className="hover:text-medical-teal transition-colors cursor-pointer">Anatomy</button>
-            <button onClick={() => scrollToSection('calculator')} className="hover:text-medical-teal transition-colors cursor-pointer">Risk Tool</button>
-            <button onClick={() => scrollToSection('second-opinion')} className="hover:text-medical-teal text-medical-gold transition-colors cursor-pointer">2nd Opinion</button>
-            <button onClick={() => scrollToSection('toetva-guide')} className="hover:text-medical-teal text-medical-teal transition-colors flex items-center gap-1 cursor-pointer">
-              <Sparkles size={12} className="text-medical-gold" />
-              {isTelugu ? 'TOETVA 3D' : 'TOETVA 3D'}
+            <button onClick={() => scrollToSection('scarless')} className="hover:text-medical-teal text-medical-teal transition-colors flex items-center gap-1 cursor-pointer whitespace-nowrap">
+              <Sparkles size={13} className="text-medical-gold" />
+              <span>Scarless TOETVA</span>
             </button>
-            <button onClick={() => scrollToSection('medication-tracker')} className="hover:text-medical-teal transition-colors cursor-pointer">
-              {isTelugu ? 'టైమ్‌టేబుల్' : 'Timetable'}
+            
+            {/* Patient Tools Dropdown */}
+            <div className="relative group">
+              <button 
+                onClick={() => setIsToolsDropdownOpen(!isToolsDropdownOpen)}
+                className="hover:text-medical-teal transition-colors flex items-center gap-1 cursor-pointer py-2 whitespace-nowrap"
+              >
+                <span>{isTelugu ? 'రోగి మార్గదర్శకాలు ▾' : 'Patient Care & Tools'}</span>
+                <ChevronDown size={13} className="text-medical-teal" />
+              </button>
+
+              <div className="absolute top-full left-0 hidden group-hover:block hover:block w-72 bg-white rounded-2xl shadow-2xl border border-slate-200 py-2.5 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                <button onClick={() => scrollToSection('toetva-guide')} className="w-full text-left px-4 py-2 hover:bg-teal-50 text-slate-700 hover:text-medical-teal text-xs font-bold flex items-center gap-2">
+                  <Sparkles size={13} className="text-medical-gold" />
+                  <span>{isTelugu ? 'స్కార్‌లెస్ TOETVA 3D గైడ్' : 'TOETVA 3D Step-by-Step'}</span>
+                </button>
+                <button onClick={() => scrollToSection('medication-tracker')} className="w-full text-left px-4 py-2 hover:bg-teal-50 text-slate-700 hover:text-medical-teal text-xs font-bold flex items-center gap-2">
+                  <Clock size={13} className="text-medical-teal" />
+                  <span>{isTelugu ? 'క్యాల్షియం & మెడిసిన్ టైమ్‌టేబుల్' : 'Post-Op Calcium Timetable'}</span>
+                </button>
+                <button onClick={() => scrollToSection('care-guide')} className="w-full text-left px-4 py-2 hover:bg-teal-50 text-slate-700 hover:text-medical-teal text-xs font-bold flex items-center gap-2">
+                  <Activity size={13} className="text-medical-teal" />
+                  <span>{isTelugu ? 'ప్రీ & పోస్ట్-ఆప్ సంరక్షణ గైడ్' : 'Pre & Post-Op Care Guide'}</span>
+                </button>
+                <button onClick={() => scrollToSection('insurance')} className="w-full text-left px-4 py-2 hover:bg-teal-50 text-slate-700 hover:text-medical-teal text-xs font-bold flex items-center gap-2">
+                  <Shield size={13} className="text-medical-teal" />
+                  <span>{isTelugu ? 'క్యాష్‌లెస్ ఇన్సూరెన్స్ & టీపీఏ' : 'Cashless Insurance & TPA'}</span>
+                </button>
+                <button onClick={() => scrollToSection('anatomy')} className="w-full text-left px-4 py-2 hover:bg-teal-50 text-slate-700 hover:text-medical-teal text-xs font-bold flex items-center gap-2">
+                  <Layers size={13} className="text-medical-teal" />
+                  <span>{isTelugu ? 'మెడ & గ్రంధుల అనాటమీ' : 'Neck Anatomy Explorer'}</span>
+                </button>
+                <button onClick={() => scrollToSection('calculator')} className="w-full text-left px-4 py-2 hover:bg-teal-50 text-slate-700 hover:text-medical-teal text-xs font-bold flex items-center gap-2">
+                  <Stethoscope size={13} className="text-medical-teal" />
+                  <span>{isTelugu ? 'టిరాడ్స్ & బయాప్సీ కాలిక్యులేటర్' : 'Thyroid TIRADS Risk Tool'}</span>
+                </button>
+                <button onClick={() => scrollToSection('research')} className="w-full text-left px-4 py-2 hover:bg-teal-50 text-slate-700 hover:text-medical-teal text-xs font-bold flex items-center gap-2">
+                  <Award size={13} className="text-medical-gold" />
+                  <span>{isTelugu ? 'అకడమిక్ పరిశోధన & కేసులు' : 'MCh Academic Pedigree'}</span>
+                </button>
+              </div>
+            </div>
+
+            <button onClick={() => scrollToSection('second-opinion')} className="hover:text-medical-teal text-medical-gold transition-colors cursor-pointer whitespace-nowrap">
+              {isTelugu ? '2వ అభిప్రాయం' : '2nd Opinion'}
             </button>
-            <button onClick={() => scrollToSection('care-guide')} className="hover:text-medical-teal transition-colors cursor-pointer">
-              {isTelugu ? 'కేర్ గైడ్' : 'Care Guide'}
+            <button onClick={() => scrollToSection('locations')} className="hover:text-medical-teal transition-colors cursor-pointer whitespace-nowrap">
+              {isTelugu ? 'క్లినిక్‌లు' : 'Clinics'}
             </button>
-            <button onClick={() => scrollToSection('insurance')} className="hover:text-medical-teal transition-colors cursor-pointer">
-              {isTelugu ? 'ఇన్సూరెన్స్' : 'Insurance'}
-            </button>
-            <button onClick={() => scrollToSection('faqs')} className="hover:text-medical-teal transition-colors cursor-pointer">
+            <button onClick={() => scrollToSection('faqs')} className="hover:text-medical-teal transition-colors cursor-pointer whitespace-nowrap">
               {isTelugu ? 'ప్రశ్నలు' : 'FAQs'}
             </button>
-            <button onClick={() => scrollToSection('locations')} className="hover:text-medical-teal transition-colors cursor-pointer">Clinics</button>
             
-            <a href="tel:+919133685222" className="text-red-700 font-extrabold border border-red-200 px-3 py-1.5 rounded-full bg-red-50 hover:bg-red-100 transition-colors flex items-center gap-1.5">
+            <a href="tel:+919133685222" className="text-red-700 font-extrabold border border-red-200 px-3 py-1.5 rounded-full bg-red-50 hover:bg-red-100 transition-colors flex items-center gap-1.5 whitespace-nowrap">
               <Phone size={12} /> 9133685222
             </a>
             
             <button
               onClick={() => setLanguage(l => l === 'en' ? 'te' : 'en')}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-slate-300 hover:border-medical-teal bg-white/95 text-xs font-bold text-slate-700 hover:text-medical-blue transition-all cursor-pointer shadow-sm"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-300 hover:border-medical-teal bg-white text-xs font-bold text-slate-700 hover:text-medical-blue transition-all cursor-pointer shadow-sm whitespace-nowrap"
               title="Switch Language / భాష మార్చండి"
             >
-              <Globe size={14} className="text-medical-teal" />
+              <Globe size={13} className="text-medical-teal" />
               <span>{isTelugu ? 'English' : 'తెలుగు'}</span>
             </button>
             <button 
               onClick={() => scrollToSection('contact')} 
-              className="bg-medical-blue text-white px-5 py-2.5 rounded-full font-bold shadow-lg shadow-medical-blue/20 hover:bg-medical-blue-dark transition-all hover:scale-105 active:scale-95 cursor-pointer"
+              className="bg-medical-blue text-white px-5 py-2.5 rounded-full font-bold shadow-lg shadow-medical-blue/20 hover:bg-medical-blue-dark transition-all hover:scale-105 active:scale-95 cursor-pointer whitespace-nowrap"
             >
               {isTelugu ? 'అపాయింట్‌మెంట్' : 'Book Consultation'}
             </button>
@@ -459,7 +504,7 @@ export default function App() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative min-h-[92vh] flex items-center pt-24 sm:pt-28 pb-16 overflow-hidden bg-white border-b border-gray-100">
+        <section className="relative min-h-[92vh] flex items-center pt-32 sm:pt-36 lg:pt-40 pb-16 overflow-hidden bg-white border-b border-gray-100">
           <div className="absolute top-0 right-0 w-2/5 h-full bg-slate-50 -z-0 hidden lg:block"></div>
           <div className="absolute top-1/4 right-1/3 w-96 h-96 bg-medical-teal/5 rounded-full blur-3xl -z-0"></div>
 
@@ -585,7 +630,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="absolute -top-4 -left-4 sm:-top-6 sm:-left-6 bg-white p-3.5 sm:p-4 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-3">
+              <div className="absolute top-3 left-3 sm:-top-4 sm:-left-4 bg-white p-3 sm:p-3.5 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-2.5 z-20">
                 <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center text-medical-teal">
                   <ShieldCheck size={22} />
                 </div>
@@ -595,7 +640,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="absolute -bottom-4 -right-4 sm:-bottom-6 sm:-right-6 bg-medical-blue text-white p-4 rounded-2xl shadow-xl flex items-center gap-3">
+              <div className="absolute bottom-3 right-3 sm:-bottom-4 sm:-right-4 bg-medical-blue text-white p-3 sm:p-3.5 rounded-2xl shadow-xl flex items-center gap-2.5 z-20">
                 <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-medical-gold">
                   <Award size={22} />
                 </div>
@@ -609,7 +654,7 @@ export default function App() {
         </section>
 
         {/* Specialized Areas */}
-        <section id="specialties" className="py-20 lg:py-28 bg-slate-bg border-b border-gray-100">
+        <section id="specialties" className="scroll-mt-28 lg:scroll-mt-32 py-20 lg:py-28 bg-slate-bg border-b border-gray-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
             <div className="text-center max-w-3xl mx-auto mb-16">
               <span className="text-xs font-bold uppercase tracking-[0.25em] text-medical-teal block mb-3 font-sans">
@@ -679,7 +724,7 @@ export default function App() {
         <SecondOpinionDesk language={language} onBookClick={() => scrollToSection('contact')} />
 
         {/* About Dr. Dinesh Goli */}
-        <section id="about" className="py-20 lg:py-28 bg-white border-b border-gray-100 relative overflow-hidden">
+        <section id="about" className="scroll-mt-28 lg:scroll-mt-32 py-20 lg:py-28 bg-white border-b border-gray-100 relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
             {/* Left Photo */}
             <div className="lg:col-span-5 relative order-2 lg:order-1">
@@ -771,7 +816,7 @@ export default function App() {
         <ResearchPedigree language={language} onBookClick={() => scrollToSection('contact')} />
 
         {/* Patient Guides Hub */}
-        <section id="education" className="py-20 lg:py-28 bg-medical-blue text-white relative overflow-hidden">
+        <section id="education" className="scroll-mt-28 lg:scroll-mt-32 py-20 lg:py-28 bg-medical-blue text-white relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-16">
               <div>
@@ -846,7 +891,7 @@ export default function App() {
         <Gallery />
 
         {/* Dual Clinic Locations */}
-        <section id="locations" className="py-20 lg:py-28 bg-white border-b border-gray-100">
+        <section id="locations" className="scroll-mt-28 lg:scroll-mt-32 py-20 lg:py-28 bg-white border-b border-gray-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
             <div className="text-center max-w-3xl mx-auto mb-16">
               <span className="text-xs font-bold uppercase tracking-[0.25em] text-medical-teal block mb-3 font-sans">
@@ -967,7 +1012,7 @@ export default function App() {
         </section>
 
         {/* Appointment Booking Section */}
-        <section id="contact" className="py-20 lg:py-28 bg-slate-bg relative">
+        <section id="contact" className="scroll-mt-28 lg:scroll-mt-32 py-20 lg:py-28 bg-slate-bg relative">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
             <div className="bg-white rounded-[2.5rem] p-8 sm:p-12 lg:p-16 border border-slate-200 card-shadow grid lg:grid-cols-12 gap-10 items-center">
               {/* Left Instructions */}
@@ -1160,7 +1205,7 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-medical-blue text-white/70 py-12 border-t border-medical-gold/20 font-sans">
+      <footer className="bg-medical-blue text-white/70 pt-12 pb-24 sm:pb-16 border-t border-medical-gold/20 font-sans">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="text-center md:text-left">
             <h4 className="text-white font-serif font-bold text-xl mb-1">Dr. Dinesh Goli</h4>
@@ -1188,16 +1233,7 @@ export default function App() {
         </div>
       </footer>
 
-      {/* Floating Emergency Action on Mobile */}
-      <div className="fixed bottom-6 left-6 md:hidden z-30">
-        <a 
-          href="tel:+919133685222" 
-          className="w-13 h-13 bg-red-600 text-white rounded-full flex items-center justify-center shadow-2xl animate-pulse"
-          aria-label="Call Emergency Helpline"
-        >
-          <Phone size={22} />
-        </a>
-      </div>
+
 
       {/* AI Health Assistant Bot */}
       <AnimatePresence>
@@ -1296,7 +1332,7 @@ export default function App() {
 
       {/* Floating Chat Trigger */}
       <motion.button
-        onClick={() => setIsChatOpen(!isChatOpen)}
+        onClick={() => { const next = !isChatOpen; setIsChatOpen(next); if (next) setIsWhatsAppOpen(false); }}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.95 }}
         className="fixed bottom-6 right-6 z-40 w-14 h-14 bg-medical-blue text-white rounded-full shadow-2xl flex items-center justify-center cursor-pointer border-2 border-white"
@@ -1313,7 +1349,7 @@ export default function App() {
       />
 
       {/* Floating WhatsApp Quick Launcher (Bottom-Left) */}
-      <WhatsAppFloatingWidget language={language} />
+      <WhatsAppFloatingWidget language={language} isOpen={isWhatsAppOpen} onToggle={() => { setIsWhatsAppOpen(!isWhatsAppOpen); if (!isWhatsAppOpen) setIsChatOpen(false); }} />
     </div>
   );
 }

@@ -99,7 +99,7 @@ export default function InteractiveFAQ({ language = 'en' }: InteractiveFAQProps)
   });
 
   return (
-    <section id="faqs" className="py-20 lg:py-28 bg-white border-b border-gray-100 relative">
+    <section id="faqs" className="scroll-mt-28 lg:scroll-mt-32 py-20 lg:py-28 bg-white border-b border-gray-100 relative">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-10">
         <div className="text-center max-w-3xl mx-auto mb-14">
           <span className="text-xs font-bold uppercase tracking-[0.25em] text-medical-teal block mb-3 font-sans">

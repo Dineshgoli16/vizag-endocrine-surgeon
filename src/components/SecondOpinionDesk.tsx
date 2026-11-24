@@ -39,7 +39,7 @@ Could you please review my case and advise on Scarless TOETVA / Organ-Preserving
   };
 
   return (
-    <section id="second-opinion" className="py-20 lg:py-28 bg-gradient-to-br from-medical-blue to-medical-blue-dark text-white relative overflow-hidden">
+    <section id="second-opinion" className="scroll-mt-28 lg:scroll-mt-32 py-20 lg:py-28 bg-gradient-to-br from-medical-blue to-medical-blue-dark text-white relative overflow-hidden">
       {/* Decorative glow */}
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-medical-teal/15 rounded-full blur-3xl pointer-events-none"></div>
 
